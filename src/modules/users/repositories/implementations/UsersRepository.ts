@@ -52,7 +52,7 @@ class UsersRepository implements IUsersRepository {
   }
 
   list(): User[] {
-    // Complete aqui
+    return this.users;
   }
 }
 
