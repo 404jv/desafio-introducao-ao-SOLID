@@ -11,6 +11,20 @@ class ListAllUsersUseCase {
   execute({ user_id }: IRequest): User[] {
     // Complete aqui
   }
+
+  isUserAdmin(user_id: string): boolean {
+    const user = this.usersRepository.findById(user_id);
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    if (!user.admin) {
+      return false;
+    }
+
+    return true;
+  }
 }
 
 export { ListAllUsersUseCase };
