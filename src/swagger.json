@@ -1,0 +1,224 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API-SOLID title",
+    "description": "API listing and creation of users. To list users, the requesting user should be a admin.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "João Victor Ramalho Alves",
+      "email": "joaovictorramalho7@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a user.",
+        "description": "Create a user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "apllication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "João Victor Ramalho",
+                "email": "joaovictorramalho7@gmail.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "admin": false,
+                  "id": "ef65dbb0-51f4-4cc1-8aee-8b711073b2cb",
+                  "name": "João Victor Ramalho",
+                  "email": "joaovictorramalho7@gmail.com",
+                  "created_at": "2021-08-02T20:56:09.304Z",
+                  "updated_at": "2021-08-02T20:56:09.304Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "This email is already in use",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User already exists!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "description": "Only admins can access.",
+        "summary": "List all users.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "items": [
+                    {
+                      "admin": true,
+                      "id": "c074c051-8f62-4120-92cf-808412447597",
+                      "name": "Victor",
+                      "email": "victor@gmail.com",
+                      "created_at": "2021-08-02T21:25:02.423Z",
+                      "updated_at": "2021-08-02T21:25:13.461Z"
+                    },
+                    {
+                      "admin": false,
+                      "id": "e6019f5e-d649-4d38-8dd1-0d45a7268ba3",
+                      "name": "João",
+                      "email": "joao@gmail.com",
+                      "created_at": "2021-08-02T21:25:02.423Z",
+                      "updated_at": "2021-08-02T21:25:13.461Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Permission denied.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You do not have permission!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "description": "Show a user.",
+        "summary": "Show a user.",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "admin": false,
+                  "id": "139e95cb-74ec-4da7-bdc5-6bdff79d2df0",
+                  "name": "João",
+                  "email": "joao@gmail.com",
+                  "created_at": "2021-08-02T21:41:06.723Z",
+                  "updated_at": "2021-08-02T21:41:06.723Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "description": "Turn a user as admin.",
+        "summary": "Turn a user as admin.",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "admin": true,
+                  "id": "139e95cb-74ec-4da7-bdc5-6bdff79d2df0",
+                  "name": "João",
+                  "email": "joao@gmail.com",
+                  "created_at": "2021-08-02T21:41:06.723Z",
+                  "updated_at": "2021-08-02T21:41:06.723Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User not found!"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
